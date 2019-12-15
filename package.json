@@ -1,0 +1,40 @@
+{
+  "name": "node-project-starter",
+  "version": "0.0.1",
+  "description": "Node JS Project Starter Kit",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node src/index.js",
+    "prettier:check": "prettier --check \"src/**/*.js\"",
+    "pretty-quick": "pretty-quick --staged --pattern \"src/**/*.js\"",
+    "test": "jest"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ]
+  },
+  "keywords": [
+    "nodejs",
+    "babel"
+  ],
+  "author": "Ben Sonley <lbsonley@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "7.7.5",
+    "@babel/node": "7.7.4",
+    "@babel/preset-env": "7.7.6",
+    "babel-jest": "24.9.0",
+    "eslint": "6.7.2",
+    "eslint-config-prettier": "6.7.0",
+    "eslint-plugin-prettier": "3.1.2",
+    "husky": "3.1.0",
+    "jest": "24.9.0",
+    "nodemon": "2.0.2",
+    "prettier": "1.19.1",
+    "pretty-quick": "2.0.1"
+  }
+}
