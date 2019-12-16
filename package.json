@@ -4,7 +4,7 @@
   "description": "Node JS Project Starter Kit",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
+    "start": "nodemon --watch src --exec babel-node src/index.js",
     "prettier:check": "prettier --check \"src/**/*.js\"",
     "pretty-quick": "pretty-quick --staged --pattern \"src/**/*.js\"",
     "test": "jest"
