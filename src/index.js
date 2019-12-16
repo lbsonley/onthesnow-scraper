@@ -1,9 +1,10 @@
 const cheerio = require("cheerio");
 const fetch = require("node-fetch");
+import { inToCm, getTimezoneAdjustedDate, getMonthIndex } from "./utils";
 let $;
 
 const url =
-  "https://www.onthesnow.com/graubunden/andermatt-gotthard-oberalp-arena/historical-snowfall.html";
+  "https://www.onthesnow.com/graubunden/andermatt-gotthard-oberalp-arena/historical-snowfall.html?&y=2010";
 
 const getPage = async url => {
   const res = await fetch(url);
@@ -11,39 +12,44 @@ const getPage = async url => {
   return cheerio.load(page);
 };
 
-const getMonthData = async monthEl => {
-  const month = [];
+const getMonthData = monthEl => {
+  const data = [];
   const monthContainer = $(monthEl);
 
-  const monthLabel = $(".dte_mon", monthContainer)
+  const [month, year] = $(".dte_mon", monthContainer)
     .text()
-    .replace(/ /, "-");
+    .split(" ");
 
   const dayContainer = $(".cal_chart_td", monthContainer);
-  console.log("dayContainer Length", dayContainer.length);
   const days = $(".dte_hd_td", dayContainer);
-  console.log("days Length", days.length);
-
-  let snowDays = 0;
 
   days.each((i, day) => {
     const snowAmount = $("div", day);
-    if (snowAmount.length > 0) snowDays += 1;
+
+    if (snowAmount.length > 0) {
+      const dayNum = $("span", day).text();
+      data.push({
+        date: getTimezoneAdjustedDate({ year, month, dayNum }),
+        newSnow: inToCm(snowAmount.text()),
+        unit: "cm"
+      });
+    }
   });
 
-  console.log("snow days", snowDays);
-
-  return monthLabel;
+  return data;
 };
 
 const getSnowData = async url => {
   $ = await getPage(url);
+  let data = [];
   const calendarContainer = $(".cal_chart_main");
   const monthContainers = $(".cal_chart_div", calendarContainer);
-  monthContainers.each(async (i, month) => {
-    const monthData = await getMonthData(month);
-    // console.log(new Date(monthData));
+  monthContainers.each((i, month) => {
+    const monthData = getMonthData(month);
+    data = data.concat(monthData);
   });
+
+  return data;
 };
 
-getSnowData(url);
+getSnowData(url).then(data => console.log("data", data));
