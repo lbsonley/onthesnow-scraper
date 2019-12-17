@@ -9,6 +9,9 @@
     "pretty-quick": "pretty-quick --staged --pattern \"{src,functions}/**/*.js\"",
     "test": "jest --verbose"
   },
+  "engines": {
+    "node": "12.x"
+  },
   "jest": {
     "moduleFileExtensions": [
       "js"
